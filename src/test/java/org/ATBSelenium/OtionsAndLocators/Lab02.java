@@ -18,5 +18,6 @@ public class Lab02 {
        WebDriver driver = new EdgeDriver(edgeOptions);
        driver.get("https://www.youtube.com/watch?v=kaG3nTdiRX0&t=287s");
        driver.quit();
+
  }
 }
