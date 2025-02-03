@@ -1,4 +1,4 @@
-package org.ATBSelenium.OtionsAndLocators;
+package org.ATBSelenium.OptionsAndLocators;
 
 import io.qameta.allure.Description;
 import org.openqa.selenium.WebDriver;
