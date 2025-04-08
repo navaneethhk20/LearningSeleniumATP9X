@@ -25,7 +25,6 @@ public class Lab01 {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@value=\"+ Add Location\"]"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@class =\"errorField\"]"))).sendKeys("lo-nithu1");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@type=\"button\" and @value=\"Add\"]"))).click();
-        driver.close();
     }
 
 }
