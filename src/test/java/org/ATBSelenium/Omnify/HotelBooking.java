@@ -22,16 +22,19 @@ public class HotelBooking {
     @BeforeTest
     public void setUp() {
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         driver.manage().window().maximize();
     }
 
         @Test
-        public void testHotelBookingWithCoupon() {
+        public void testBookingWithCoupon() {
             try {
                 driver.get("https://www.makemytrip.com/");
-                WebElement locationInput = driver.findElement(By.id("location"));
-                locationInput.sendKeys("New York");
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@data-cy =\"closeModal\"]"))).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//span[@class=\"headerIconWrapper\"])[2]"))).click();
+                WebElement enterValue= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@data-cy=\"city\"]")));
+                enterValue.click();
+                enterValue.sendKeys("New York");
 
                 // Select check-in date (April 10)
                 WebElement checkInDatePicker = driver.findElement(By.id("check-in-date"));
