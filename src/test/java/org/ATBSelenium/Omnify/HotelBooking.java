@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -37,37 +36,19 @@ public class HotelBooking {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@title=\"Where do you want to stay?\"]"))).sendKeys("New york");
                 driver.findElement(By.xpath("(//div[@class=\"hw__recentSearchTextWrapper\"])[1]")).click();
 
-//date is selected from April 20-25, as 10-15 is no longer available
+                //date is selected from April 20-25, as 10-15 is no longer available
                 WebElement checkInDatePicker = driver.findElement(By.xpath("//div[@class=\"DayPicker-Day\" and @aria-label=\"Sun Apr 20 2025\"]"));
                 checkInDatePicker.click();
 
                 WebElement checkOutDatePicker = driver.findElement(By.xpath("//div[ @aria-label=\"Fri Apr 25 2025\"]"));
                 checkOutDatePicker.click();
 
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()=\"APPLY\"]"))).click();
+                driver.findElement(By.id("//button[@id=\"hsw_search_button\"]")).click();
 
-                // Click search button
-                WebElement searchButton = driver.findElement(By.id("search-button"));
-                searchButton.click();
+                WebElement hotel = driver.findElement(By.xpath("//span[text()=\"Hyatt Grand Central New York\"]"));
+                hotel.click();
 
-                // Wait for search results to load
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("hotel-result")));
-
-                // Select the first hotel from the search results
-                List<WebElement> hotelResults = driver.findElements(By.className("hotel-result"));
-                if (!hotelResults.isEmpty()) {
-                    WebElement firstHotel = hotelResults.get(0);
-                    WebElement selectButton = firstHotel.findElement(By.className("select-button"));
-                    selectButton.click();
-                } else {
-                    throw new RuntimeException("No hotel results found!");
-                }
-
-                // Wait for hotel details page to load
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.id("hotel-details")));
-
-                // Store the original price for later comparison
-                String originalPriceText = driver.findElement(By.id("total-price")).getText();
-                double originalPrice = extractPrice(originalPriceText);
 
                 // Apply the coupon code "SUMMER25"
                 WebElement couponField = driver.findElement(By.id("coupon-code"));
@@ -109,10 +90,6 @@ public class HotelBooking {
             }
         }
 
-        // Helper method to extract price from text (e.g., "$199.99" -> 199.99)
-        private double extractPrice(String priceText) {
-            return Double.parseDouble(priceText.replaceAll("[^0-9.]", ""));
-        }
 
         @AfterTest
         public void tearDown() {
