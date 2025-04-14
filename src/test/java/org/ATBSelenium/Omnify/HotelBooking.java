@@ -16,24 +16,20 @@ import java.time.Duration;
 import java.util.List;
 
 public class HotelBooking {
+    WebDriver driver;
+    WebDriverWait wait;
 
-        WebDriver driver;
-        WebDriverWait wait;
-
-        @BeforeTest
-        public void setUp() {
-            driver = new ChromeDriver();
-            wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            driver.manage().window().maximize();
-        }
+    @BeforeTest
+    public void setUp() {
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.manage().window().maximize();
+    }
 
         @Test
         public void testHotelBookingWithCoupon() {
             try {
-                // Open the hotel booking application
-                driver.get("https://example-hotel-booking-app.com"); // Replace with actual URL
-
-                // Search for hotels in "New York" for the dates April 10 - April 15
+                driver.get("https://www.makemytrip.com/");
                 WebElement locationInput = driver.findElement(By.id("location"));
                 locationInput.sendKeys("New York");
 
@@ -126,4 +122,3 @@ public class HotelBooking {
             }
         }
     }
-}
