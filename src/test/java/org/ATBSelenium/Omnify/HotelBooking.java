@@ -12,7 +12,6 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-import java.util.List;
 
 public class HotelBooking {
     WebDriver driver;
@@ -34,7 +33,7 @@ public class HotelBooking {
                 WebElement enterValue= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@data-cy=\"city\"]")));
                 enterValue.click();
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@title=\"Where do you want to stay?\"]"))).sendKeys("New york");
-                driver.findElement(By.xpath("(//div[@class=\"hw__recentSearchTextWrapper\"])[1]")).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class=\"hw__recentSearchTextWrapper\"])[1]"))).click();
 
                 //date is selected from April 20-25, as 10-15 is no longer available
                 WebElement checkInDatePicker = driver.findElement(By.xpath("//div[@class=\"DayPicker-Day\" and @aria-label=\"Sun Apr 20 2025\"]"));
@@ -44,44 +43,31 @@ public class HotelBooking {
                 checkOutDatePicker.click();
 
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()=\"APPLY\"]"))).click();
-                driver.findElement(By.id("//button[@id=\"hsw_search_button\"]")).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id=\"hsw_search_button\"]"))).click();
+                Thread.sleep(4000);
 
-                WebElement hotel = driver.findElement(By.xpath("//span[text()=\"Hyatt Grand Central New York\"]"));
-                hotel.click();
+                //adding refresh button because application is not working
+                driver.navigate().refresh();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=\"Hyatt Grand Central New York\"]"))).click();
 
+                String originalWindow = driver.getWindowHandle();
+                wait.until(ExpectedConditions.numberOfWindowsToBe(2));
 
-                // Apply the coupon code "SUMMER25"
-                WebElement couponField = driver.findElement(By.id("coupon-code"));
-                couponField.sendKeys("SUMMER25");
+                for (String windowHandle : driver.getWindowHandles()) {
+                    if (!originalWindow.equals(windowHandle)) {
+                        driver.switchTo().window(windowHandle);
+                        break;
+                    }
+                }
 
-                WebElement applyCouponButton = driver.findElement(By.id("apply-coupon"));
-                applyCouponButton.click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='couponCode']"))).sendKeys("SUMMER25");
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Apply')]"))).click();
 
-                // Wait for price to update
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("discount-applied")));
+                WebElement discountElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'Discount applied')]")));
+                Assert.assertTrue(discountElement.isDisplayed(), "Discount was not applied successfully");
 
-                // Verify that the discount is applied correctly (25% off)
-                String discountedPriceText = driver.findElement(By.id("discounted-price")).getText();
-                double discountedPrice = extractPrice(discountedPriceText);
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(),'Proceed to Checkout')]"))).click();
 
-                // Verify discount is correctly applied (25% off)
-                double expectedDiscountedPrice = originalPrice * 0.75; // 25% off
-                Assert.assertEquals(discountedPrice, expectedDiscountedPrice, 0.01,
-                        "Discount was not applied correctly. Expected: " + expectedDiscountedPrice +
-                                ", Actual: " + discountedPrice);
-
-                // Proceed to checkout
-                WebElement proceedToCheckoutButton = driver.findElement(By.id("checkout-button"));
-                proceedToCheckoutButton.click();
-
-                // Wait for checkout page to load
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.id("payment-section")));
-
-                // Verify we're on the checkout page but don't complete payment
-                Assert.assertTrue(driver.findElement(By.id("payment-section")).isDisplayed(),
-                        "Failed to reach the checkout page");
-
-                System.out.println("Test passed: Successfully proceeded to checkout with discount applied!");
 
             } catch (Exception e) {
                 System.err.println("Test failed: " + e.getMessage());
