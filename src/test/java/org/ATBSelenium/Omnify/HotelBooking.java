@@ -34,19 +34,16 @@ public class HotelBooking {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//span[@class=\"headerIconWrapper\"])[2]"))).click();
                 WebElement enterValue= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@data-cy=\"city\"]")));
                 enterValue.click();
-                enterValue.sendKeys("New York");
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@title=\"Where do you want to stay?\"]"))).sendKeys("New york");
+                driver.findElement(By.xpath("(//div[@class=\"hw__recentSearchTextWrapper\"])[1]")).click();
 
-                // Select check-in date (April 10)
-                WebElement checkInDatePicker = driver.findElement(By.id("check-in-date"));
+//date is selected from April 20-25, as 10-15 is no longer available
+                WebElement checkInDatePicker = driver.findElement(By.xpath("//div[@class=\"DayPicker-Day\" and @aria-label=\"Sun Apr 20 2025\"]"));
                 checkInDatePicker.click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("date-picker")));
-                driver.findElement(By.xpath("//td[@data-date='10' and @data-month='3']")).click(); // April is month 3 (0-indexed)
 
-                // Select check-out date (April 15)
-                WebElement checkOutDatePicker = driver.findElement(By.id("check-out-date"));
+                WebElement checkOutDatePicker = driver.findElement(By.xpath("//div[ @aria-label=\"Fri Apr 25 2025\"]"));
                 checkOutDatePicker.click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("date-picker")));
-                driver.findElement(By.xpath("//td[@data-date='15' and @data-month='3']")).click();
+
 
                 // Click search button
                 WebElement searchButton = driver.findElement(By.id("search-button"));
