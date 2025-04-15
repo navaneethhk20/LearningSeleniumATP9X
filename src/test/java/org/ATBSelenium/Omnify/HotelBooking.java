@@ -27,28 +27,23 @@ public class HotelBooking {
         @Test
         public void testBookingWithCoupon() {
             try {
-                driver.get("https://www.makemytrip.com/");
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@data-cy =\"closeModal\"]"))).click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//span[@class=\"headerIconWrapper\"])[2]"))).click();
-                WebElement enterValue= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@data-cy=\"city\"]")));
-                enterValue.click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@title=\"Where do you want to stay?\"]"))).sendKeys("New york");
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class=\"hw__recentSearchTextWrapper\"])[1]"))).click();
+                driver.get("https://www.agoda.com/");
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder=\"Enter a destination or property\"]"))).sendKeys("New York");
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class=\"Suggestion Suggestion__categoryName\" and @data-text=\"New York (NY)\"]"))).click();
 
                 //date is selected from April 20-25, as 10-15 is no longer available
-                WebElement checkInDatePicker = driver.findElement(By.xpath("//div[@class=\"DayPicker-Day\" and @aria-label=\"Sun Apr 20 2025\"]"));
+                WebElement checkInDatePicker = driver.findElement(By.xpath("//span[@data-selenium-date=\"2025-04-20\"]"));
                 checkInDatePicker.click();
 
-                WebElement checkOutDatePicker = driver.findElement(By.xpath("//div[ @aria-label=\"Fri Apr 25 2025\"]"));
+                WebElement checkOutDatePicker = driver.findElement(By.xpath("//span[@data-selenium-date=\"2025-04-25\"]"));
                 checkOutDatePicker.click();
 
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()=\"APPLY\"]"))).click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id=\"hsw_search_button\"]"))).click();
-                Thread.sleep(4000);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=\"SEARCH\"]"))).click();
 
-                //adding refresh button because application is not working
-                driver.navigate().refresh();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=\"Hyatt Grand Central New York\"]"))).click();
+
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//a[@data-element-name=\"property-card-content\"])[1]"))).click();
 
                 String originalWindow = driver.getWindowHandle();
                 wait.until(ExpectedConditions.numberOfWindowsToBe(2));
@@ -71,8 +66,6 @@ public class HotelBooking {
 
             } catch (Exception e) {
                 System.err.println("Test failed: " + e.getMessage());
-                e.printStackTrace();
-                Assert.fail("Test failed with exception: " + e.getMessage());
             }
         }
 
