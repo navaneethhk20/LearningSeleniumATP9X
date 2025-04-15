@@ -39,9 +39,8 @@ public class HotelBooking {
                 WebElement checkOutDatePicker = driver.findElement(By.xpath("//span[@data-selenium-date=\"2025-04-25\"]"));
                 checkOutDatePicker.click();
 
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("//*[@id=\"occupancy-box\"]"))).click();
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=\"SEARCH\"]"))).click();
-
-
 
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//a[@data-element-name=\"property-card-content\"])[1]"))).click();
 
