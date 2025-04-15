@@ -32,6 +32,7 @@ public class HotelBooking {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder=\"Enter a destination or property\"]"))).sendKeys("New York");
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class=\"Suggestion Suggestion__categoryName\" and @data-text=\"New York (NY)\"]"))).click();
 
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("//*[@id=\"occupancy-box\"]"))).click();
                 //date is selected from April 20-25, as 10-15 is no longer available
                 WebElement checkInDatePicker = driver.findElement(By.xpath("//span[@data-selenium-date=\"2025-04-20\"]"));
                 checkInDatePicker.click();
