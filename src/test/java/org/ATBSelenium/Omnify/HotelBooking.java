@@ -61,8 +61,11 @@ public class HotelBooking {
                 WebElement discountElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'Discount applied')]")));
                 Assert.assertTrue(discountElement.isDisplayed(), "Discount was not applied successfully");
 
-                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(),'Proceed to Checkout')]"))).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[text()=\"Book now\"])[1]"))).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=\"NEXT: FINAL STEP\"]"))).click();
 
+
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(),'Proceed to Checkout')]"))).click();
 
             } catch (Exception e) {
                 System.err.println("Test failed: " + e.getMessage());
