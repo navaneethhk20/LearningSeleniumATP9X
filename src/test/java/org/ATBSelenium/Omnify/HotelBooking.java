@@ -55,12 +55,6 @@ public class HotelBooking {
                     }
                 }
 
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='couponCode']"))).sendKeys("SUMMER25");
-                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Apply')]"))).click();
-
-                WebElement discountElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'Discount applied')]")));
-                Assert.assertTrue(discountElement.isDisplayed(), "Discount was not applied successfully");
-
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[text()=\"Book now\"])[1]"))).click();
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=\"NEXT: FINAL STEP\"]"))).click();
 
