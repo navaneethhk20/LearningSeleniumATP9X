@@ -65,8 +65,7 @@ public class HotelBooking {
                 System.err.println("Test failed: " + e.getMessage());
             }
         }
-
-
+        
         @AfterTest
         public void tearDown() {
             // Close the browser
