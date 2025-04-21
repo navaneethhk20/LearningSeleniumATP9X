@@ -1,5 +1,7 @@
 package org.ATBSelenium.practice;
 
-public class Test2 {
+import org.testng.annotations.Test;
 
+public class Test2 {
+    @Test
 }
